@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My website</title>
+    <link rel="stylesheet" href="homepage.css">
+</head>
+<body>
+    <div class="container">
+        <h1>时至今日，你仍是我的光</h1>
+<!--        <p></p>-->
+        <img src="judgePhoto.jpg" alt="Small image" class="small-image">
+        <button id="surpriseButton">点击我</button>
+
+        <!-- hidden videos3 -->
+        <div id="surprise" class="hidden">
+            <video id="birthdayVideo" width="800" controls>
+                <source src="happyBirthday.mp4" type="video/mp4">
+            </video>
+            <div class="controls">
+                <button onclick="playVideo()">播放</button>
+                <button onclick="stopVideo()">停止</button>
+                <button onclick="restartVideo()">重播</button>
+            </div>
+            <!-- 新增按钮，用于触发25次点击事件 -->
+            <button id="click14Button" class="hidden">点击25次!</button>
+        </div>
+    </div>
+
+    <!-- 隐藏的音频播放部分 -->
+    <audio id="audioSurprise" src="party4u.mp3"></audio>
+
+    
+    <div id="wishesWall">
+        <h2>Wishes Wall</h2>
+        <textarea id="wishInput" placeholder="Put your wishes here..."></textarea>
+        <button id="submitWish">Submit Wish</button>
+        <div id="wishes"></div>
+    </div>
+    <script src="homepage.js"></script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+body {
+    /* 移除固定的背景色，让JavaScript控制 */
+    /* background-color: #5F9EA0; */
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 50px;
+    transition: background-color 2s ease-in-out; /* 延长过渡时间，更平滑 */
+}
+
+.container {
+    border: 1px solid #dde;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #ff4500;
+}
+
+.small-image {
+    width: 200px;
+    margin-top: 20px;
+}
+
+video {
+    margin-top: 20px;
+    border: 5px solid #ff69b4;
+    border-radius: 10px;
+}
+
+.controls {
+    margin-top: 20px;
+}
+
+button {
+    background-color: #ff4500;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #ff6347;
+}
+
+.hidden {
+    display: none;
+}
+
+#surprise img {
+    max-width: 100%;
+    margin-top: 20px;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-400px);
+    }
+}
+
+#wishesWall {
+    margin-top: 30px;
+    text-align: left;
+}
+
+#wishInput {
+    width: 80%;
+    height: 100px;
+    margin-bottom: 10px;
+}
+
+#wishes {
+    background-color: #f7f7f7;
+    padding: 10px;
+    border-radius: 5px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.wish {
+    background-color: #e6e6e6;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
