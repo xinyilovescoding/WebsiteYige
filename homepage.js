@@ -171,7 +171,15 @@ window.onload = function() {
 function addWishToWall(wishText) {
     var wishDiv = document.createElement("div");
     wishDiv.className = "wish";
-    wishDiv.textContent = wishText;
+
+    //timestamp
+    var timestamp = new Date().toLocaleString();
+
+    // 创建愿望内容HTML
+    wishDiv.innerHTML = `
+        <div class="wish-content">${wishText}</div>
+        <div class="wish-time">${timestamp}</div>
+    `;
 
     var deleteButton = document.createElement("button");
     deleteButton.textContent = "delete";
@@ -196,7 +204,7 @@ function addWishToWall(wishText) {
 function saveWish(wishText) {
     var wishes = JSON.parse(localStorage.getItem("wishes")) || [];
     wishes.push(wishText);
-    localStorage.setItem("wishes", JSON.stringify(wishText));
+    localStorage.setItem("wishes", JSON.stringify(wishes));
 }
 
 // 从 LocalStorage 加载愿望
