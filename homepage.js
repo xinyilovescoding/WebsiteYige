@@ -1,4 +1,5 @@
 // 点击 surpriseButton 后显示隐藏的 surprise div，并显示"点击14次"按钮
+databaseURL: "https://console.firebase.google.com/project/birthdayyige/database/birthdayyige-default-rtdb/data/~2F?hl=zh-cn"
 document.getElementById("surpriseButton").addEventListener("click", function() {
     var surpriseDiv = document.getElementById("surprise");
 
@@ -156,26 +157,45 @@ document.getElementById("submitWish").addEventListener("click", function() {
     var wishInput = document.getElementById("wishInput");
     var wishText = wishInput.value.trim();
     if (wishText !== "") {
-        addWishToWall(wishText);
-        saveWish(wishText);
+        saveWishToFirebase(wishText);
         wishInput.value = "";
     }
 });
 
-// 从 LocalStorage 加载愿望
+// 从 Firebase 加载愿望
 window.onload = function() {
-    loadWishes();
+    loadWishesFromFirebase();
 };
 
-// 将愿望添加到墙上
-function addWishToWall(wishText) {
+// 保存愿望到 Firebase
+function saveWishToFirebase(wishText) {
+    const timestamp = new Date().toISOString();
+    db.ref("wishes").push({
+        text: wishText,
+        time: timestamp
+    });
+}
+
+// 从 Firebase 实时加载愿望
+function loadWishesFromFirebase() {
+    db.ref("wishes").on("value", function(snapshot) {
+        const wishesContainer = document.getElementById("wishes");
+        wishesContainer.innerHTML = ""; // 清空旧内容
+
+        snapshot.forEach(function(childSnapshot) {
+            const wishData = childSnapshot.val();
+            const wishKey = childSnapshot.key;
+            addWishToWall(wishData.text, wishData.time, wishKey);
+        });
+    });
+}
+
+// 将愿望显示到墙上
+function addWishToWall(wishText, wishTime, wishKey) {
     var wishDiv = document.createElement("div");
     wishDiv.className = "wish";
+    var timestamp = new Date(wishTime).toLocaleString();
 
-    //timestamp
-    var timestamp = new Date().toLocaleString();
-
-    // 创建愿望内容HTML
     wishDiv.innerHTML = `
         <div class="wish-content">${wishText}</div>
         <div class="wish-time">${timestamp}</div>
@@ -184,12 +204,10 @@ function addWishToWall(wishText) {
     var deleteButton = document.createElement("button");
     deleteButton.textContent = "delete";
     deleteButton.style.marginLeft = "10px";
-
     deleteButton.onclick = function() {
         var enteredPassword = prompt("Please enter code to delete this wish:");
         if (enteredPassword === adminPassword) {
-            document.getElementById("wishes").removeChild(wishDiv);
-            deleteWish(wishText);
+            deleteWishFromFirebase(wishKey);
             alert("This wish is deleted.");
         } else {
             alert("This code is wrong, you can't delete it!");
@@ -200,26 +218,7 @@ function addWishToWall(wishText) {
     document.getElementById("wishes").appendChild(wishDiv);
 }
 
-// 保存愿望到 LocalStorage
-function saveWish(wishText) {
-    var wishes = JSON.parse(localStorage.getItem("wishes")) || [];
-    wishes.push(wishText);
-    localStorage.setItem("wishes", JSON.stringify(wishes));
-}
-
-// 从 LocalStorage 加载愿望
-function loadWishes() {
-    var wishes = JSON.parse(localStorage.getItem("wishes")) || [];
-    wishes.forEach(function(wishText) {
-        addWishToWall(wishText);
-    });
-}
-
-// 删除愿望并从LocalStorage中移除
-function deleteWish(wishText) {
-    var wishes = JSON.parse(localStorage.getItem("wishes")) || [];
-    var updatedWishes = wishes.filter(function(wish) {
-        return wish !== wishText;
-    });
-    localStorage.setItem("wishes", JSON.stringify(updatedWishes));
+// 从 Firebase 删除愿望
+function deleteWishFromFirebase(wishKey) {
+    db.ref("wishes/" + wishKey).remove();
 }
